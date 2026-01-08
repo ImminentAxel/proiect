@@ -1,0 +1,314 @@
+/* =====================================================
+   Tokyo Explorer - Custom Styles
+   ===================================================== */
+
+/* Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Root Variables */
+:root {
+    --tokyo-red: #DC3545;
+    --tokyo-dark: #1a1a2e;
+    --tokyo-light: #f8f9fa;
+    --tokyo-gold: #ffc107;
+    --transition: all 0.3s ease;
+}
+
+/* Base Styles */
+body {
+    font-family: 'Poppins', 'Noto Sans JP', sans-serif;
+    background-color: var(--tokyo-light);
+}
+
+/* Navbar Customization */
+.navbar {
+    padding: 1rem 0;
+    transition: var(--transition);
+    backdrop-filter: blur(10px);
+    background: rgba(26, 26, 46, 0.95) !important;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    margin: 0 0.2rem;
+    border-radius: 0.5rem;
+    transition: var(--transition);
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background: rgba(220, 53, 69, 0.2);
+    color: var(--tokyo-red) !important;
+}
+
+/* Carousel Styles */
+.carousel-image {
+    height: 85vh;
+    min-height: 500px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.carousel-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(26, 26, 46, 0.3) 0%,
+        rgba(26, 26, 46, 0.7) 100%
+    );
+}
+
+.carousel-caption {
+    bottom: 20%;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.carousel-caption h1 {
+    font-weight: 900;
+    letter-spacing: -1px;
+}
+
+/* Card Styles */
+.card {
+    border: none;
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: var(--transition);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.card-hover:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(220, 53, 69, 0.15);
+}
+
+.card-img-wrapper {
+    overflow: hidden;
+    height: 200px;
+}
+
+.card-img-top {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.card-hover:hover .card-img-top {
+    transform: scale(1.1);
+}
+
+.card-title {
+    color: var(--tokyo-dark);
+}
+
+/* Button Styles */
+.btn-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    border: none;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: var(--transition);
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #c82333 0%, #a71d2a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(220, 53, 69, 0.3);
+}
+
+.btn-outline-danger {
+    border-width: 2px;
+    font-weight: 600;
+}
+
+.btn-outline-danger:hover {
+    transform: translateY(-2px);
+}
+
+/* Badge Styles */
+.badge.bg-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+}
+
+/* Form Styles */
+.form-control:focus {
+    border-color: var(--tokyo-red);
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.input-group-lg .form-control {
+    padding: 1rem 1.25rem;
+}
+
+/* Section Styles */
+section {
+    overflow: hidden;
+}
+
+/* Footer Styles */
+footer a:hover {
+    color: var(--tokyo-red) !important;
+    transition: var(--transition);
+}
+
+/* Utility Classes */
+.rounded-4 {
+    border-radius: 1rem !important;
+}
+
+.shadow-lg {
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Rating Stars */
+.rating {
+    color: var(--tokyo-gold);
+}
+
+/* Price Tag */
+.price-tag {
+    background: var(--tokyo-red);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-weight: 600;
+}
+
+/* Page Header */
+.page-header {
+    background: linear-gradient(135deg, var(--tokyo-dark) 0%, #16213e 100%);
+    padding: 5rem 0 4rem;
+    margin-bottom: 3rem;
+}
+
+.page-header h1 {
+    font-weight: 900;
+}
+
+/* Table Styles */
+.table {
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.table thead {
+    background: var(--tokyo-dark);
+    color: white;
+}
+
+/* Loading Spinner */
+.spinner-tokyo {
+    border-color: var(--tokyo-red);
+    border-right-color: transparent;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .carousel-image {
+        height: 60vh;
+    }
+    
+    .carousel-caption h1 {
+        font-size: 2rem;
+    }
+    
+    .carousel-caption p {
+        font-size: 1rem;
+    }
+    
+    .display-6 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Dark mode card for specific sections */
+.card-dark {
+    background: var(--tokyo-dark);
+    color: white;
+}
+
+.card-dark .card-title {
+    color: white;
+}
+
+/* Image overlay effect */
+.img-overlay-container {
+    position: relative;
+}
+
+.img-overlay-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.7) 0%,
+        transparent 50%
+    );
+    border-radius: 1rem;
+}
+
+.img-overlay-content {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    z-index: 1;
+    color: white;
+}
+
+/* Alert Styles */
+.alert {
+    border: none;
+    border-radius: 0.75rem;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--tokyo-red);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #c82333;
+}
