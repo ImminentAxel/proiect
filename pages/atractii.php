@@ -58,7 +58,7 @@
 <section class="py-5">
     <div class="container">
         <?php
-        $conn = mysqli_connect("localhost", "root", "", "tokyo");
+        $conn = mysqli_connect("localhost", "root", "", "tokyo_db");
 
         if (!$conn) {
             die("<div class='alert alert-danger'>Conexiunea a eșuat: " . mysqli_connect_error() . "</div>");
