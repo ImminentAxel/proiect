@@ -1,3 +1,30 @@
+<?php
+// --- CONEXIUNE BAZA DE DATE ---
+$host = 'localhost';
+$db   = 'tokyo_db';
+$user = 'root'; 
+$pass = '';     
+$charset = 'utf8mb4';
+
+try {
+    $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+    $pdo = new PDO($dsn, $user, $pass, [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ]);
+} catch (PDOException $e) {
+    die("Eroare de conexiune: " . $e->getMessage());
+}
+
+// --- PRELUARE DATE ---
+try {
+    $stmt = $pdo->query("SELECT * FROM transport ORDER BY tip ASC");
+    $transporturi = $stmt->fetchAll();
+} catch (PDOException $e) {
+    $transporturi = [];
+}
+?>
+
 <!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -7,12 +34,12 @@
     <title>Transport Tokyo - Tokyo Explorer</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="../css/style.css" rel="stylesheet">
+     <link href="../css/transport.css" rel="stylesheet">
 </head>
 <body>
 
-<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center" href="../index.php">
@@ -39,8 +66,7 @@
 </nav>
 <div style="height: 76px;"></div>
 
-<!-- Page Header -->
-<section class="page-header text-white text-center">
+<section class="page-header text-white text-center" style="background-color: #1a1e23; padding: 60px 0;">
     <div class="container">
         <span class="badge bg-danger mb-3">交通</span>
         <h1 class="display-4 fw-bold">Transport în Tokyo</h1>
@@ -48,19 +74,8 @@
     </div>
 </section>
 
-<!-- Conținut Transport -->
 <section class="py-5">
     <div class="container">
-        <?php
-        require_once '../config.php';
-        
-        try {
-            $stmt = $pdo->query("SELECT * FROM transport ORDER BY tip ASC");
-            $transporturi = $stmt->fetchAll();
-        } catch (PDOException $e) {
-            $transporturi = [];
-        }
-        ?>
         
         <?php if (count($transporturi) > 0): ?>
         <div class="table-responsive">
@@ -75,26 +90,37 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($transporturi as $transport): ?>
-                    <tr>
-                        <td>
-                            <span class="badge bg-danger">
-                                <?php 
-                                $icon = 'bi-bus-front';
-                                if ($transport['tip'] == 'Metrou') $icon = 'bi-train-subway-fill';
-                                if ($transport['tip'] == 'Tren') $icon = 'bi-train-front-fill';
-                                ?>
-                                <i class="bi <?php echo $icon; ?> me-1"></i>
-                                <?php echo htmlspecialchars($transport['tip']); ?>
-                            </span>
-                        </td>
-                        <td class="fw-bold"><?php echo htmlspecialchars($transport['denumire']); ?></td>
-                        <td class="text-secondary"><?php echo htmlspecialchars($transport['descriere']); ?></td>
-                        <td><span class="text-danger fw-bold"><?php echo htmlspecialchars($transport['pret']); ?></span></td>
-                        <td><i class="bi bi-clock me-1"></i><?php echo htmlspecialchars($transport['program']); ?></td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
+    <?php foreach ($transporturi as $transport): ?>
+    <tr>
+        <td>
+            <span class="badge bg-danger">
+                <?php 
+                $tip = $transport['tip'];
+                // Folosim clasele cele mai compatibile din Bootstrap Icons
+                if ($tip == 'metrou') {
+                    $icon_class = 'bi-subway'; 
+                } elseif ($tip == 'Tren') {
+                    $icon_class = 'bi-train-front'; 
+                } else {
+                    $icon_class = 'bi-bus-front'; 
+                }
+                ?>
+                <i class="bi <?php echo $icon_class; ?> me-1"></i>
+                <?php echo htmlspecialchars($tip); ?>
+            </span>
+        </td>
+        <td class="fw-bold">
+            <a href="detalii_transport.php?id=<?php echo $transport['id']; ?>" class="text-decoration-none text-dark">
+                <?php echo htmlspecialchars($transport['denumire']); ?> 
+                <i class="bi bi-arrow-right-short text-danger"></i>
+            </a>
+        </td>
+        <td class="text-secondary small"><?php echo htmlspecialchars($transport['descriere']); ?></td>
+        <td><span class="text-danger fw-bold"><?php echo htmlspecialchars($transport['pret']); ?></span></td>
+        <td><i class="bi bi-clock me-1 text-secondary"></i> <?php echo htmlspecialchars($transport['program']); ?></td>
+    </tr>
+    <?php endforeach; ?>
+</tbody>
             </table>
         </div>
         <?php else: ?>
@@ -105,46 +131,53 @@
         </div>
         <?php endif; ?>
         
-        <!-- Sfaturi Transport -->
-        <div class="row mt-5 g-4">
-            <div class="col-md-4">
-                <div class="card bg-light border-0 h-100">
-                    <div class="card-body text-center">
-                        <div class="bg-danger rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                            <i class="bi bi-credit-card text-white fs-4"></i>
-                        </div>
-                        <h5>Suica/Pasmo Card</h5>
-                        <p class="text-secondary small">Cumpără un card IC pentru a plăti rapid și ușor în tot transportul public din Tokyo.</p>
-                    </div>
+        <div class="row g-4 mt-5">
+    <div class="col-md-4">
+        <a href="https://www.pasmo.co.jp/visitors/en/" target="_blank" class="text-decoration-none text-dark">
+            <div class="info-card p-4 text-center h-100 shadow-hover">
+                <div class="icon-circle mb-3 mx-auto">
+                    <i class="bi bi-credit-card-2-front text-white fs-4"></i>
                 </div>
+                <h5 class="fw-bold">Pasmo Card</h5>
+                <p class="small text-muted">Cumpără un card IC pentru a plăti rapid și ușor în tot transportul public din Tokyo.</p>
             </div>
-            <div class="col-md-4">
-                <div class="card bg-light border-0 h-100">
-                    <div class="card-body text-center">
-                        <div class="bg-danger rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                            <i class="bi bi-phone text-white fs-4"></i>
-                        </div>
-                        <h5>Apps Recomandate</h5>
-                        <p class="text-secondary small">Descarcă Google Maps sau Japan Transit pentru navigare perfectă în rețeaua de transport.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card bg-light border-0 h-100">
-                    <div class="card-body text-center">
-                        <div class="bg-danger rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                            <i class="bi bi-ticket-perforated text-white fs-4"></i>
-                        </div>
-                        <h5>JR Pass</h5>
-                        <p class="text-secondary small">Pentru călătorii în afara Tokyo-ului, JR Pass oferă acces nelimitat la trenurile JR, inclusiv Shinkansen.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </a>
     </div>
+
+    <div class="col-md-4">
+        <a href="https://play.google.com/store/apps/details?id=jp.co.jorudan.nrkj" target="_blank" class="text-decoration-none text-dark">
+            <div class="info-card p-4 text-center h-100 shadow-hover">
+                <div class="icon-circle mb-3 mx-auto">
+                    <i class="bi bi-phone text-white fs-4"></i>
+                </div>
+                <h5 class="fw-bold">Aplicații Recomandate</h5>
+                <p class="small text-muted">Descarcă Japan Transit pentru navigare perfectă în rețeaua de transport.</p>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <a href="https://www.jreast.co.jp/en/multi/pass/" target="_blank" class="text-decoration-none text-dark">
+            <div class="info-card p-4 text-center h-100 shadow-hover">
+                <div class="icon-circle mb-3 mx-auto">
+                    <i class="bi bi-ticket-perforated text-white fs-4"></i>
+                </div>
+                <h5 class="fw-bold">JR Pass</h5>
+                <p class="small text-muted">Pentru călătorii în afara Tokyo-ului, JR Pass oferă acces nelimitat la trenurile JR, inclusiv Shinkansen.</p>
+            </div>
+        </a>
+    </div>
+</div>
 </section>
 
-<?php include '../footer.php'; ?>
+<?php 
+// Verifică dacă fișierul există înainte de include
+if (file_exists('../footer.php')) {
+    include '../footer.php'; 
+} else {
+    echo '<footer class="bg-dark text-white text-center py-3"><p>&copy; 2024 Tokyo Explorer</p></footer>';
+}
+?>
 
 </body>
 </html>

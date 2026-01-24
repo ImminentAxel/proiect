@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 22, 2026 at 09:38 AM
+-- Generation Time: Jan 24, 2026 at 04:10 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -195,17 +195,26 @@ CREATE TABLE `transport` (
   `denumire` varchar(100) DEFAULT NULL,
   `descriere` text DEFAULT NULL,
   `pret` varchar(100) DEFAULT NULL,
-  `program` varchar(100) DEFAULT NULL
+  `program` varchar(100) DEFAULT NULL,
+  `detalii_extinse` text DEFAULT NULL,
+  `imagine_url` varchar(255) DEFAULT NULL,
+  `rute` text DEFAULT NULL,
+  `plata_metoda` varchar(255) DEFAULT NULL,
+  `plata_instructiuni` text DEFAULT NULL,
+  `imagine_harta` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `transport`
 --
 
-INSERT INTO `transport` (`id`, `tip`, `denumire`, `descriere`, `pret`, `program`) VALUES
-(1, 'Metrou', 'Tokyo Metro', 'Rețea extinsă de 13 linii', '170-320 JPY', '05:00-24:00'),
-(2, 'Tren', 'JR Yamanote Line', 'Linie circulară care conectează principalele zone', '150-200 JPY', '04:30-01:00'),
-(3, 'Autobuz', 'Toei Bus', 'Rețea de autobuze urbane', '210 JPY flat', '06:00-23:00');
+INSERT INTO `transport` (`id`, `tip`, `denumire`, `descriere`, `pret`, `program`, `detalii_extinse`, `imagine_url`, `rute`, `plata_metoda`, `plata_instructiuni`, `imagine_harta`) VALUES
+(1, 'Metrou', 'Tokyo Metro', 'Cea mai eficientă metodă de deplasare, acoperă tot orașul.', '170 - 320 JPY', '05:00 - 00:00', 'Metroul din Tokyo este operat de două companii mari: Tokyo Metro și Toei Subway. Rețeaua este extrem de vastă și punctuală. Stațiile importante precum Shinjuku sau Shibuya pot fi foarte aglomerate, deci este recomandat să urmați semnele de pe podea pentru direcția de mers. Atenție: majoritatea liniilor se opresc în jurul miezului nopții și reîncep la 5 dimineața.', '../images/metro.jpg', 'Ginza, Shibuya, Shinjuku, Asakusa, Roppongi', 'Suica, Pasmo, Tokyo Subway Ticket', 'Introduceți biletul în fantă sau atingeți cardul IC la porți.', '../images/Metro2.jpg'),
+(2, 'Tren', 'JR Yamanote Line', 'Linia circulară verde care unește marile centre (Shibuya, Shinjuku, Tokyo).', '150 - 200 JPY', '04:30 - 01:00', 'Linia JR Yamanote este cea mai utilă pentru turiști. Este o linie circulară care unește marile centre de divertisment și afaceri (Shibuya, Shinjuku, Akihabara). Trenurile vin la fiecare 2-3 minute. Un cerc complet durează aproximativ o oră. Dacă aveți JR Pass, puteți folosi această linie gratuit.', '../images/YamanoteLine.jpg', 'Shibuya, Shinjuku, Tokyo Station, Akihabara, Ueno, Ikebukuro', 'Suica, Pasmo, JR Pass', 'Atingeți cardul IC la cititorul albastru de la porțile automate.', '../images/Yamanote.jpg'),
+(3, 'Autobuz', 'Toei Bus', 'Ideal pentru zonele unde metroul nu ajunge direct.', '210 JPY (fix)', '06:00 - 22:00', 'Autobuzele Toei sunt excelente pentru a ajunge în zone mai puțin deservite de trenuri, cum ar fi zonele rezidențiale din estul orașului sau zona Asakusa. Plata se face de obicei la intrare (tarif fix de 210 JPY). Puteți folosi cardul Suica sau Pasmo atingând cititorul de lângă șofer.', '../images/Toei.jpg', 'Trasee locale: Asakusa, Odaiba, Roppongi Hills', 'Suica, Pasmo, Cash', 'Plata se face la urcare, direct la șofer sau prin atingerea cardului IC.', '../images/toei_harta.jpg'),
+(4, 'Tren', 'Yurikamome', 'Tren automatizat (fără șofer) spre insula artificială Odaiba.', '190 - 390 JPY', '06:00 - 00:00', 'Yurikamome este un sistem de tranzit complet automatizat care leagă stația Shimbashi de insula artificială Odaiba. Deoarece trenul nu are conductor, pasagerii pot sta chiar în partea din față pentru o vedere panoramică spectaculoasă asupra Rainbow Bridge și a golfului Tokyo. Este metoda ideală pentru a vizita atracțiile din Odaiba într-un mod relaxant și pitoresc.', '../images/YurikanomeLine.jpg', 'Shimbashi, Shiodome, Daiba, Telecom Center, Toyosu.', 'Suica, Pasmo, Bilet de o zi (One-day Pass).', 'Atingeți cardul IC la porțile de acces. Dacă plănuiți să coborâți la mai mult de 3 stații în Odaiba, biletul de o zi (820 JPY) este mult mai avantajos.', '../images/yurikanome.jpg'),
+(5, 'Autobuz', 'Airport Limousine', 'Autobuze de lux care fac legătura între Narita/Haneda și marile hoteluri.', '1300 - 3200 JPY', '24/7 (variabil)', 'Airport Limousine este cel mai confortabil transfer direct între Aeroporturile Narita/Haneda și marile hoteluri sau gări din Tokyo.', '../images/Limousine.jpg', 'Trasee locale: Asakusa, Odaiba, Roppongi Hills', 'Suica, Pasmo, Cash', 'Plata se face la urcare, direct la șofer sau prin atingerea cardului IC.', '../images/airport_harta.jpg'),
+(6, 'Tren', 'Shinkansen', 'Trenurile glonț pentru călătorii rapide către alte orașe (Kyoto, Osaka).', '13,000+ JPY', '06:00 - 23:00', 'Shinkansen, faimosul „tren-glonț” al Japoniei, oferă cea mai rapidă și confortabilă conexiune între Tokyo și celelalte mari orașe ale țării. Cu viteze de peste 300 km/h și o punctualitate legendară, acest tren transformă călătoriile pe distanțe lungi într-o experiență premium, oferind spațiu generos pentru picioare și facilități moderne la bord.', '../images/ShinkansenTrain.jpg', 'Tokyo Station ↔ Kyoto, Osaka, Nagoya, Hiroshima, Kanazawa.', 'Bilet fizic (Paper Ticket), JR Pass, Smart EX.', 'Introduceți biletul în fanta porții automate și recuperați-l imediat după ce treceți. Păstrați biletul până la destinația finală pentru a putea ieși din stație.', '../images/Shinkansen.jpg');
 
 --
 -- Indexes for dumped tables
@@ -310,7 +319,7 @@ ALTER TABLE `rezervari`
 -- AUTO_INCREMENT for table `transport`
 --
 ALTER TABLE `transport`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
