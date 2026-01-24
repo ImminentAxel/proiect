@@ -121,7 +121,6 @@ $evenimente_filtrate = array_values($evenimente_filtrate);
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center" href="../index.php">
-            <span class="fs-4 fw-bold text-danger me-2">🗼</span>
             <span class="fw-bold">Tokyo</span>
             <span class="text-danger ms-1">Explorer</span>
         </a>

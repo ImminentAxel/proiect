@@ -304,6 +304,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['newsletter_email'])) 
         </div>
     </div>
 </section>
+<!-- Testimoniale (SELECT din DB) -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="badge bg-danger mb-2">Recenzii</span>
+            <h2 class="display-6 fw-bold mb-3">Ce spun clienții noștri</h2>
+            <p class="text-secondary">Experiențe reale din Tokyo Explorer</p>
+        </div>
+        
+        <div class="row g-4">
+            <?php
+            // SELECT - Preluăm review-uri din baza de date
+            try {
+                require_once 'config.php';
+                $stmt = $pdo->query("SELECT * FROM reviews_rezervari ORDER BY data_review DESC LIMIT 3");
+                $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                
+                if (count($reviews) > 0) {
+                    foreach ($reviews as $review) {
+                        echo '<div class="col-lg-4 col-md-6">';
+                        echo '<div class="card h-100 border-0 shadow-lg">';
+                        echo '<div class="card-body p-4">';
+                        
+                        // Rating (stars)
+                        echo '<div class="mb-3">';
+                        for ($i = 0; $i < $review['rating']; $i++) {
+                            echo '<i class="bi bi-star-fill text-warning"></i>';
+                        }
+                        for ($i = $review['rating']; $i < 5; $i++) {
+                            echo '<i class="bi bi-star text-secondary"></i>';
+                        }
+                        echo '</div>';
+                        
+                        echo '<p class="card-text text-secondary mb-4">"' . htmlspecialchars(substr($review['comentariu'], 0, 150)) . '..."</p>';
+                        
+                        echo '<div class="d-flex align-items-center pt-3 border-top">';
+                        echo '<div class="flex-grow-1">';
+                        echo '<strong class="d-block mb-1">' . htmlspecialchars($review['nume_client']) . '</strong>';
+                        echo '<small class="text-danger fw-semibold">' . htmlspecialchars($review['tip_experienta']) . '</small>';
+                        echo '</div>';
+                        echo '<div class="ms-3">';
+                        echo '<i class="bi bi-person-circle text-danger" style="font-size: 2rem;"></i>';
+                        echo '</div>';
+                        echo '</div>';
+                        
+                        echo '</div>';
+                        echo '</div>';
+                        echo '</div>';
+                    }
+                } else {
+                    echo '<div class="col-12"><div class="alert alert-info mb-0 text-center"><i class="bi bi-info-circle me-2"></i>Niciun review disponibil momentan.</div></div>';
+                }
+            } catch (PDOException $e) {
+                // Dacă tabela nu există, nu afișam nimic
+            }
+            ?>
+        </div>
+    </div>
+</section>
 
 <!-- Newsletter Section -->
 <section class="py-5 bg-dark text-white">
@@ -372,6 +431,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['newsletter_email'])) 
 </section>
 
 <?php include 'footer.php'; ?>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form[action="index.php"]');

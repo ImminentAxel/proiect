@@ -16,7 +16,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center" href="../index.php">
-            <span class="fs-4 fw-bold text-danger me-2">🗼</span>
             <span class="fw-bold">Tokyo</span>
             <span class="text-danger ms-1">Explorer</span>
         </a>
@@ -29,7 +28,7 @@
                 <li class="nav-item"><a class="nav-link" href="atractii.php"><i class="bi bi-geo-alt me-1"></i>Atracții</a></li>
                 <li class="nav-item"><a class="nav-link" href="restaurante.php"><i class="bi bi-cup-hot me-1"></i>Restaurante</a></li>
                 <li class="nav-item"><a class="nav-link" href="cazare.php"><i class="bi bi-building me-1"></i>Cazare</a></li>
-                <li class="nav-item"><a class="nav-link" href="evenimente.php"><i class="bi bi-calendar-event me-1"></i>Evenimente</a></li>
+                <li class="nav-item"><a class="nav-link" href="evenimente.php"><i class="bi bi-calendar-event me-1"></i>evenimente</a></li>
                 <li class="nav-item"><a class="nav-link" href="transport.php"><i class="bi bi-train-front me-1"></i>Transport</a></li>
                 <li class="nav-item"><a class="nav-link active" href="rezervari.php"><i class="bi bi-calendar-check me-1"></i>Rezervări</a></li>
                 <li class="nav-item"><a class="nav-link" href="contact.php"><i class="bi bi-envelope me-1"></i>Contact</a></li>
@@ -44,7 +43,7 @@
     <div class="container">
         <span class="badge bg-danger mb-3">予約</span>
         <h1 class="display-4 fw-bold">Fă o Rezervare</h1>
-        <p class="lead">Rezervă restaurante, tururi și experiențe unice</p>
+        <p class="lead">Alege din pachete gata sau creează-ți experiența personalizată</p>
     </div>
 </section>
 
@@ -93,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <!-- Formular Rezervare -->
-<section class="py-5">
+<section id="formular-section" class="py-5">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
@@ -106,6 +105,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endif; ?>
                 
                 <div class="card shadow-lg border-0">
+                    <div class="card-header bg-danger text-white py-4">
+                        <h5 class="mb-0"><i class="bi bi-pencil-square me-2"></i>Completează Detaliile Rezervării</h5>
+                    </div>
                     <div class="card-body p-5">
                         <form method="POST" action="rezervari.php">
                             <div class="row g-4">
@@ -186,7 +188,112 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </section>
 
+
+<!-- Pachete Populare (SELECT din DB) -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-6 fw-bold mb-3">
+                <i class="bi bi-star text-warning me-2"></i>Pachete Populare
+            </h2>
+            <p class="text-secondary">Alege din ofertele noastre pre-configurate</p>
+        </div>
+        
+        <div class="row g-4">
+            <?php
+            // SELECT - Preluăm pachete din baza de date
+            try {
+                $stmt = $pdo->query("SELECT * FROM pachete_rezervari WHERE activ = 1 ORDER BY pret ASC");
+                $pachete = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                
+                if (count($pachete) > 0) {
+                    foreach ($pachete as $pachet) {
+                        $icoane = [
+                            'restaurant' => 'bi-cup-hot',
+                            'cazare' => 'bi-building',
+                            'tur' => 'bi-map'
+                        ];
+                        $icona = $icoane[$pachet['tip_serviciu']] ?? 'bi-star';
+                        
+                        echo '<div class="col-lg-4 col-md-6">';
+                        echo '<div class="card h-100 shadow-lg border-0 transition-card" style="cursor: pointer;" onclick="document.getElementById(\'tip_serviciu\').value=\'' . $pachet['tip_serviciu'] . '\'; window.scrollTo({top: document.getElementById(\'formular-section\').offsetTop - 100, behavior: \'smooth\'});">';
+                        
+                        // Header cu culoare
+                        echo '<div class="card-header bg-danger text-white py-3">';
+                        echo '<div class="d-flex align-items-center justify-content-between">';
+                        echo '<div>';
+                        echo '<h5 class="card-title mb-0"><i class="bi ' . $icona . ' me-2"></i>' . htmlspecialchars($pachet['nume_pachet']) . '</h5>';
+                        echo '</div>';
+                        if ($pachet['popular']) {
+                            echo '<span class="badge bg-warning text-dark">Popular</span>';
+                        }
+                        echo '</div>';
+                        echo '</div>';
+                        
+                        // Body
+                        echo '<div class="card-body">';
+                        echo '<p class="text-secondary mb-3">' . htmlspecialchars($pachet['descriere']) . '</p>';
+                        
+                        // Caracteristici
+                        echo '<div class="mb-3">';
+                        if (!empty($pachet['caracteristici'])) {
+                            $caracteristici = explode(',', $pachet['caracteristici']);
+                            foreach ($caracteristici as $cara) {
+                                echo '<div class="mb-2"><small class="text-success"><i class="bi bi-check-circle-fill me-1"></i>' . trim($cara) . '</small></div>';
+                            }
+                        }
+                        echo '</div>';
+                        
+                        // Durată și preț
+                        echo '<div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded">';
+                        echo '<div>';
+                        echo '<small class="text-secondary">Durată</small><br>';
+                        echo '<strong>' . htmlspecialchars($pachet['durata']) . '</strong>';
+                        echo '</div>';
+                        echo '<div class="text-end">';
+                        echo '<small class="text-secondary">Preț/persoană</small><br>';
+                        echo '<h5 class="text-danger mb-0">¥' . number_format($pachet['pret'], 0, '.', ',') . '</h5>';
+                        echo '</div>';
+                        echo '</div>';
+                        
+                        echo '</div>';
+                        
+                        // Footer
+                        echo '<div class="card-footer bg-white border-top">';
+                        echo '<button class="btn btn-danger w-100" onclick="document.getElementById(\'tip_serviciu\').value=\'' . $pachet['tip_serviciu'] . '\'; window.scrollTo({top: document.getElementById(\'formular-section\').offsetTop - 100, behavior: \'smooth\'});">';
+                        echo '<i class="bi bi-calendar-check me-2"></i>Selectează Pachet';
+                        echo '</button>';
+                        echo '</div>';
+                        
+                        echo '</div>';
+                        echo '</div>';
+                    }
+                } else {
+                    echo '<div class="col-12"><div class="alert alert-info"><i class="bi bi-info-circle me-2"></i>Nu sunt pachete disponibile momentan.</div></div>';
+                }
+            } catch (PDOException $e) {
+                echo '<div class="col-12"><div class="alert alert-danger"><i class="bi bi-exclamation-triangle me-2"></i>Eroare la încărcarea pachete.</div></div>';
+            }
+            ?>
+        </div>
+    </div>
+</section>
+
+
+
+
 <?php include '../footer.php'; ?>
+
+<style>
+.transition-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.transition-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+}
+</style>
 
 </body>
 </html>
