@@ -122,40 +122,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['newsletter_email'])) 
                     Tokyo este o metropolă fascinantă care îmbină perfect tradiția milenară cu inovația futuristă. 
                     Cu peste 37 de milioane de locuitori, este cel mai mare oraș din lume.
                 </p>
-                <div class="row g-3">
-                    <div class="col-6">
-                        <div class="d-flex align-items-center">
-                            <div class="bg-danger rounded-circle p-2 me-3">
-                                <i class="bi bi-building text-white"></i>
-                            </div>
-                            <span>Arhitectură unică</span>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="d-flex align-items-center">
-                            <div class="bg-danger rounded-circle p-2 me-3">
-                                <i class="bi bi-cup-hot text-white"></i>
-                            </div>
-                            <span>Gastronomie de top</span>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="d-flex align-items-center">
-                            <div class="bg-danger rounded-circle p-2 me-3">
-                                <i class="bi bi-tree text-white"></i>
-                            </div>
-                            <span>Grădini zen</span>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="d-flex align-items-center">
-                            <div class="bg-danger rounded-circle p-2 me-3">
-                                <i class="bi bi-shop text-white"></i>
-                            </div>
-                            <span>Shopping infinit</span>
-                        </div>
-                    </div>
-                </div>
+<div class="row g-3">
+    <!-- Arhitectură unică -->
+    <div class="col-6">
+        <div class="d-flex align-items-center">
+            <div class="bg-danger rounded-circle" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <i class="bi bi-building text-white" style="font-size: 24px;"></i>
+            </div>
+            <span class="ms-3">Arhitectură unică</span>
+        </div>
+    </div>
+    
+    <!-- Gastronomie de top -->
+    <div class="col-6">
+        <div class="d-flex align-items-center">
+            <div class="bg-danger rounded-circle" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <i class="bi bi-cup-hot text-white" style="font-size: 24px;"></i>
+            </div>
+            <span class="ms-3">Gastronomie de top</span>
+        </div>
+    </div>
+    
+    <!-- Grădini zen -->
+    <div class="col-6">
+        <div class="d-flex align-items-center">
+            <div class="bg-danger rounded-circle" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <i class="bi bi-tree text-white" style="font-size: 24px;"></i>
+            </div>
+            <span class="ms-3">Grădini zen</span>
+        </div>
+    </div>
+    
+    <!-- Shopping infinit -->
+    <div class="col-6">
+        <div class="d-flex align-items-center">
+            <div class="bg-danger rounded-circle" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <i class="bi bi-shop text-white" style="font-size: 24px;"></i>
+            </div>
+            <span class="ms-3">Shopping infinit</span>
+        </div>
+    </div>
+</div>
             </div>
             <div class="col-lg-6">
                 <div class="position-relative">
@@ -365,6 +372,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['newsletter_email'])) 
 </section>
 
 <?php include 'footer.php'; ?>
-
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form[action="index.php"]');
+    const newsletterSection = document.getElementById('newsletter-section');
+    
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        
+        fetch('index.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const newDoc = parser.parseFromString(html, 'text/html');
+            const newAlert = newDoc.querySelector('.alert');
+            
+            if (newAlert) {
+                const existingAlert = form.parentElement.querySelector('.alert');
+                if (existingAlert) existingAlert.remove();
+                form.parentElement.insertBefore(newAlert, form);
+                
+                // Scroll la alert
+                newAlert.scrollIntoView({behavior: 'smooth', block: 'center'});
+            }
+            
+            // Golește inputul
+            form.querySelector('input[name="newsletter_email"]').value = '';
+        })
+        .catch(error => console.error('Eroare:', error));
+    });
+});
+</script>
 </body>
 </html>

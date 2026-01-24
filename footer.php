@@ -4,7 +4,7 @@
             <!-- Despre -->
             <div class="col-lg-4 col-md-6">
                 <h5 class="text-danger mb-3">
-                    <span class="me-2">🗼</span>Tokyo Explorer
+                Tokyo Explorer
                 </h5>
                 <p class="text-secondary">
                     Descoperă frumusețea și cultura fascinantă a capitalei Japoniei. 
