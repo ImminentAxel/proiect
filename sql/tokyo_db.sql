@@ -1,3 +1,4 @@
+
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
@@ -59,26 +60,31 @@ INSERT INTO `atractii` (`id`, `nume`, `categorie`, `adresa`, `program`, `pret_in
 -- Table structure for table `cazare`
 --
 
+--
+-- Structura tabelului pentru tabelul `cazare`
+--
+
+DROP TABLE IF EXISTS `cazare`;
 CREATE TABLE `cazare` (
-  `id` int(11) NOT NULL,
-  `nume` varchar(100) NOT NULL,
-  `tip` enum('hotel','hostel','ryokan','apartament') NOT NULL,
-  `adresa` varchar(200) DEFAULT NULL,
-  `pret_noapte` decimal(10,2) DEFAULT NULL,
-  `stele` int(11) DEFAULT NULL,
-  `facilitati` text DEFAULT NULL,
-  `imagine` varchar(255) DEFAULT NULL,
-  `descriere` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nume` varchar(255) NOT NULL,
+  `descriere` text NOT NULL,
+  `pret_noapte` decimal(10,2) NOT NULL,
+  `stele` int(11) NOT NULL DEFAULT 3,
+  `adresa` varchar(255) NOT NULL,
+  `imagine` varchar(255) NOT NULL,
+  `tip` varchar(50) NOT NULL DEFAULT 'Hotel',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `cazare`
+-- Date de test pentru tabelul `cazare` (Cu imagini actualizate)
 --
 
-INSERT INTO `cazare` (`id`, `nume`, `tip`, `adresa`, `pret_noapte`, `stele`, `facilitati`, `imagine`, `descriere`) VALUES
-(1, 'Park Hyatt Tokyo', 'hotel', 'Shinjuku, Tokyo', 50000.00, 5, NULL, NULL, 'Hotel de lux cu vedere panoramică'),
-(2, 'Khaosan Tokyo Kabuki', 'hostel', 'Asakusa, Tokyo', 3500.00, 3, NULL, NULL, 'Hostel popular pentru buget redus'),
-(3, 'Hoshinoya Tokyo', 'ryokan', 'Otemachi, Tokyo', 80000.00, 5, NULL, NULL, 'Ryokan tradițional de lux în centrul orașului');
+INSERT INTO `cazare` (`nume`, `descriere`, `pret_noapte`, `stele`, `adresa`, `imagine`, `tip`) VALUES
+('Hoshinoya Tokyo', 'Un ryokan de lux situat în inima orașului, oferind o experiență tradițională japoneză cu confort modern și ape termale onsen.', 80000.00, 5, 'Otemachi, Chiyoda', 'https://images.unsplash.com/photo-1590559993510-9118b62fa643?w=800', 'Ryokan'),
+('Hotel Gracery Shinjuku', 'Cunoscut pentru capul Godzilla de pe terasă, acest hotel modern oferă camere confortabile în centrul districtului de divertisment.', 15000.00, 4, 'Kabukicho, Shinjuku', 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800', 'Hotel'),
+('9h Nine Hours', 'Experiență futuristă într-un hotel capsulă minimalist. Ideal pentru călătorii care caută eficiență și un design unic.', 3500.00, 2, 'Akasaka, Minato', 'https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?w=800', 'Hostel');
 
 -- --------------------------------------------------------
 
